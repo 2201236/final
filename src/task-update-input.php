@@ -10,6 +10,66 @@ $connect = 'mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8';
 <!DOCTYPE html>
 <html lang="ja">
 
+<style>
+    body {
+    margin: 20px;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+td {
+    padding: 10px;
+}
+
+select,
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    height: 40px;
+}
+
+input[type="submit"],
+.modo {
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.modo {
+    background-color: #2ecc71;
+}
+
+.eee:hover,
+.modo:hover {
+    background-color: #2980b9;
+}
+
+label {
+    margin-right: 10px;
+}
+
+</style>
+
 <head>
     <meta charset="UTF-8">
     <title>更新画面</title>
@@ -17,7 +77,7 @@ $connect = 'mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8';
 </head>
 
 <body>
-    <h1>タスク更新画面</h1>
+    <h1>ToDoリスト更新</h1>
     <form action="task-update-output.php" method="post">
         <?php
 
@@ -105,7 +165,9 @@ $connect = 'mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8';
         <p><input type="submit" value="更新" style="width: 200px; height: 40px;" class="eee"></p>
     </form>
 
-    <p><button onclick="location.href='ichiran.php'" class="modo" style="width: 200px; height: 40px;">トップへ戻る</button></p>
+    <a href="task.php">
+    <img src="image/modoru.png" alt="" style="height: 40px;" class="modoru">
+</a>
 </body>
 
 </html>

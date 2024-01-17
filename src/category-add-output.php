@@ -6,14 +6,13 @@
 
     $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
-	<head>
-		<meta charset="UTF-8">
-		<title>更新output</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>登録画面</title>
         <link rel="stylesheet" href="style.css">
-	</head>
+    </head>
     <style>
         body {
     font-family: Arial, sans-serif;
@@ -62,35 +61,29 @@ h1 {
     background-color: #2980b9;
 }
 
-hr {
-    margin-top: 20px;
-    border: 1px solid #ddd; /* Add a subtle border for separation */
-}
-
     </style>
-	<body>
-<?php
+    <body> 
+        <h1></h1>
+     <?php
     $pdo=new PDO($connect, USER, PASS);
-    $sql=$pdo->prepare('update todolist set detail=?, category=?, due_date=?, state=?, priority=? where id=?');
-    // SQL発行準備 prepareメソッド　作成２
-    if($sql->execute([htmlspecialchars($_POST['detail']),$_POST['category'],$_POST['due_date'], $_POST['state'],$_POST['priority'], $_POST['id']])){
+    $sql=$pdo->prepare('insert into final_category(title) values (?)');
+   
+    if ($sql->execute([$_POST['title']]) ) {
         echo '<script>';
-    echo '  function jump() {';
-    echo '    location.href = "task.php";';
-    echo '  }';
-    echo '</script>';
-      
+echo '  function jump() {';
+echo '    location.href = "task.php";';
+echo '  }';
+echo '</script>';
+        echo '<font color="red">追加に成功しました。</font>';
         echo '<body onLoad="setTimeout(jump, 3000);">';
-        echo '<div class="test">
-    <img src="image/dl.gif" alt="Animated GIF" style="width: 800px;height: 400px;" align="center">
-    </div> '; 
-    } else{
-        echo '更新に失敗しました';
-    } 
-?>
-        <hr>
-      
-        <p><button onclick="location.href='task.php'" class="eee" style= "width: 200px; height: 40px;" >トップ画面へ戻る</button></p>
-    </body>
-</html>
+        echo '<p>約3秒後にジャンプします</p>';
+    }else{
+        echo '<font color="red">追加に失敗しました。</font>';
+    }
+    ?>
 
+    <form action="task.php" method="post">
+    <p><input type="submit" style="width: 200px; height: 40px;" value="トップ画面へ" class="eee"></p>
+    </form>
+</body>
+</html>

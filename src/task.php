@@ -13,6 +13,18 @@ $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Title Here</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // タスク新規登録ボタンの要素を取得
+            var taskAddButton = document.querySelector(".eee");
+
+            // ボタンがクリックされたときの処理
+            taskAddButton.addEventListener("click", function() {
+                // ボタンがクリックされたら、指定のページに遷移
+                location.href = 'task-add-input.php';
+            });
+        });
+    </script>
     <style>
         /* Common styles */
         body {
@@ -21,7 +33,17 @@ $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
-
+h1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: center; /* 修正されたスタイル */
+    z-index: 1000;
+}
         /* Media queries for responsiveness */
         @media screen and (min-width: 751px) {
             .box-container {
@@ -58,6 +80,7 @@ $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
             padding: 20px;
             box-sizing: border-box;
             margin-top: 20px;
+            
         }
 
         /* Pie chart styles */
@@ -122,7 +145,7 @@ $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
         }
         .box.blue .percent .line {
         stroke-dashoffset: calc(440 - (440 * 100) / 100);
-        stroke: #03a9f4;
+        stroke: #ff00ff;
       }
         /* Button container styles */
         .button-container {
@@ -146,23 +169,288 @@ $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
                 width: 100%;
                 margin-top: 5px;
             }
-        }
+        }.update, .sa {
+        background-color: #2ecc71;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .update:hover, .sa:hover {
+        background-color: #27ae60;
+    }
 
         /* Add button styles */
-        .add {
+        
+        .box.task-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease-in-out;
+}
+
+.box.task-card:hover {
+    transform: scale(1.05);
+}
+
+.box.task-card .title {
+    background-color: #d3d3d3;
+    color: #000000;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.box.task-card p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.box.task-card .button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.box.task-card .update,
+.box.task-card .sa {
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.box.task-card .update {
+    background-color: #2ecc71;
+}
+
+.box.task-card .sa {
+    background-color: #e74c3c;
+}
+
+.box.task-card .update:hover,
+.box.task-card .sa:hover {
+    background-color: #27ae60;
+}
+
+.add {
             position: fixed;
             top: 10px;
             right: 10px;
             z-index: 999;
         }
+.add {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+.add p {
+    margin: 0;
+}
+
+.add button {
+    background-color: #ee82ee;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.add button:hover {
+    background-color: #8b008b;
+}
+
+.cate {
+    position: fixed;
+    top: -20px;
+    right: 200px; /* 適切な値に調整してください */
+    z-index: 999;
+}
+
+.cate button {
+    background-color: #ea5532;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    width: auto; /* ボタンの幅を100%に変更 */
+}
+
+.cate button:hover {
+    background-color: #dc143c;
+}
+.cate-info,
+.add-info {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cate-info button,
+.add-info button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.cate-info button:hover,
+.add-info button:hover {
+    background-color: #2980b9;
+}
+@-webkit-keyframes arrow-move08 {
+	0% {
+		top: 40%;/*スタート地点（サンプルは[class:cp_arrows]height300pxの35%）*/
+		opacity: 0;
+	}
+	70% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes arrow-move08 {
+	0% {
+		top: 40%;/*スタート地点（サンプルは[class:cp_arrows]height300pxの35%）*/
+		opacity: 0;
+	}
+	70% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.boxwrap{
+  margin:40px auto;
+  width:400px;
+  padding:20px 60px;
+  border:1px solid #ddd;
+  background-color: #efefef;
+}
+.wrap{
+     margin: auto;
+    width: 300px;
+    background-color: #ee82ee;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.mgb-20{
+  margin-bottom: 20px;
+}
+
+.mgb-80{
+  margin-bottom: 80px;
+}
+
+/* ①text-alignとpaddingで中央配置 */
+.wrap.pattern-1{
+  text-align:center;
+  padding:20px 0;
+}
+
+/* ②heightとline-heightで中央配置 */
+.wrap.pattern-2{
+  text-align:center;
+  height:60px;
+  line-height:60px;
+}
+/* 応用 */
+.wrap.pattern-2-round{
+  text-align:center;
+  height:60px;
+  line-height:60px;
+  width:60px;
+  border-radius:50%;
+}
+
+/* ③tableレイアウトとvertical-alignで中央配置 */
+.wrap.pattern-3{
+  height:60px;
+  display:table;
+  text-align:center;
+}
+
+.wrap.pattern-3 div{
+  display:table-cell;
+  vertical-align:middle;
+}
+
+/* ④positionとtranslateで中央配置 */
+.wrap.pattern-4{
+  height:60px;
+  text-align:center;
+  position:relative;
+}
+
+.wrap.pattern-4 div{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:100%;
+}
+
+/* ⑤flexboxで中央配置 */
+.wrap.pattern-5{
+  height:60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ⑥CSS Gridレイアウトで中央配置 */
+.wrap.pattern-6{
+  height:60px;
+  display: grid;
+  place-items: center;
+}
+.test{
+    text-align: center;
+}
     </style>
 </head>
 <body>
-
+   <?php $count=0;?>
+<h1>ToDoリスト
+        <div class="cate">
+            <p><button onclick="location.href='category-add.php'" class="ccc">カテゴリ新規登録</button></p>
+        </div>
+        <div class="add">
+            <p><button onclick="location.href='task-add-input.php'" class="eee">タスク新規登録</button></p>
+        </div>
+    </h1>
 <?php
 $pdo = new PDO($connect, USER, PASS);
 foreach ($pdo->query('SELECT * FROM todolist') as $row) {
+
     $iiiddd = $row['id'];
+
     echo '
     <div class="box-container">
         <div class="box blue">
@@ -202,12 +490,18 @@ foreach ($pdo->query('SELECT * FROM todolist') as $row) {
             </div>
         </div>
     </div>';
-}
+    
+    }
+
 ?>
+<div class="test">
+    <img src="image/ya.gif" alt="Animated GIF" align="center">
+    </div>  
+    <div class="boxwrap">
 
-<div class="add">
-    <p><button onclick="location.href='task-add-input.php'" class="eee">タスク登録画面へ</button></p>
-</div>
-
+  <div class="wrap pattern-1 mgb-20"> 
+    
+    <a href="task-add-input.php">ToDoリストの新規登録はこちら</a>
+  </div>
 </body>
 </html>
