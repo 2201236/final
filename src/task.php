@@ -444,56 +444,80 @@ h1 {
         <div class="add">
             <p><button onclick="location.href='task-add-input.php'" class="eee">タスク新規登録</button></p>
         </div>
+        <!-- Category filter form -->
+    <form action="" method="get" class="cate-info">
+        <label for="categoryFilter">カテゴリ検索：</label>
+        <select name="categoryFilter" id="categoryFilter">
+            <option value="">すべてのカテゴリ</option>
+            <?php
+            // Fetch categories from the final_category table
+            $pdoCategories = new PDO($connect, USER, PASS);
+            $categories = $pdoCategories->query('SELECT * FROM final_category');
+            foreach ($categories as $category) {
+                echo '<option value="' . $category['id'] . '">' . $category['title'] . '</option>';
+            }
+            ?>
+        </select>
+        <button type="submit">検索</button>
+    </form>
+
     </h1>
 <?php
-$pdo = new PDO($connect, USER, PASS);
-foreach ($pdo->query('SELECT * FROM todolist') as $row) {
+    $categoryFilter = isset($_GET['categoryFilter']) ? $_GET['categoryFilter'] : null;
 
-    $iiiddd = $row['id'];
-
-    echo '
-    <div class="box-container">
-        <div class="box blue">
-            <div class="percent">
-                <svg>
-                    <circle class="base" cx="75" cy="75" r="70"></circle>
-                    <circle class="line" cx="75" cy="75" r="70" data-id="' . $row['id'] . '"></circle>
-                </svg>
-                <div class="number">
-                    <h3 class="title">' . $row['state'] . '<span>%</span></h3>
-                </div>
-                <p class="text">進捗状況</p>
-            </div>
-        </div>
-
-        <div class="box task-card">';
-        
-        $sql = $pdo->prepare('SELECT * FROM final_category WHERE id = ?');
-        $sql->execute([$row['category']]);
-        $finalCategory = $sql->fetch();
-        echo '<div class="title">';
-        echo '<p>' . $finalCategory['title'] . '</p>
-        </div>
-            <p>' . $row['detail'] . '</p>
-            <p>締め切り日: ' . $row['due_date'] . '</p>
-            <p>優先度: ' . $row['priority'] . '</p>
-            
-            <div class="button-container">
-                <form action="task-update-input.php" method="post">';
-                    echo '<input type="hidden" name="id" value="', $row['id'] ,'">';
-                    echo '<button type="submit" class="update">更新</button>';
-                echo '</form>';
-                echo '<form action="task-delete.php" method="post">';
-                    echo '<input type="hidden" name="id" value="', $iiiddd.'">';
-                    echo '<button type="submit" class="sa">削除</button>
-                </form>
-            </div>
-        </div>
-    </div>';
+    $pdo = new PDO($connect, USER, PASS);
+    $query = 'SELECT * FROM todolist';
     
+    // Apply category filter if selected
+    if (!empty($categoryFilter)) {
+        $query .= ' WHERE category = ' . $categoryFilter;
     }
 
-?>
+    foreach ($pdo->query($query) as $row) {
+        // ... (your existing code for displaying tasks)
+        echo '
+        <div class="box-container">
+            <div class="box blue">
+                <div class="percent">
+                    <svg>
+                        <circle class="base" cx="75" cy="75" r="70"></circle>
+                        <circle class="line" cx="75" cy="75" r="70" data-id="' . $row['id'] . '"></circle>
+                    </svg>
+                    <div class="number">
+                        <h3 class="title">' . $row['state'] . '<span>%</span></h3>
+                    </div>
+                    <p class="text">進捗状況</p>
+                </div>
+            </div>
+    
+            <div class="box task-card">';
+            
+            $sql = $pdo->prepare('SELECT * FROM final_category WHERE id = ?');
+            $sql->execute([$row['category']]);
+            $finalCategory = $sql->fetch();
+            echo '<div class="title">';
+            echo '<p>' . $finalCategory['title'] . '</p>
+            </div>
+                <p>' . $row['detail'] . '</p>
+                <p>締め切り日: ' . $row['due_date'] . '</p>
+                <p>優先度: ' . $row['priority'] . '</p>
+                
+                <div class="button-container">
+                    <form action="task-update-input.php" method="post">';
+                        echo '<input type="hidden" name="id" value="', $row['id'] ,'">';
+                        echo '<button type="submit" class="update">更新</button>';
+                    echo '</form>';
+                    echo '<form action="task-delete.php" method="post">';
+                        echo '<input type="hidden" name="id" value="', $row['id'].'">';
+                        echo '<button type="submit" class="sa">削除</button>
+                    </form>
+                </div>
+            </div>
+        </div>';
+        
+        }
+    
+    ?>   
 <div class="test">
     <img src="image/ya.gif" alt="Animated GIF" align="center">
     </div>  
